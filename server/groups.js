@@ -15,11 +15,11 @@ module.exports = function(){
             if(this.data[i].name == groupName){
                 found = true;
                 this.data.splice(i, 1);
-                return this.data
+                return this.data;
             }
         }
         return found;
-    }
+    };
 
     // Return all groups where the username exists (or according to role)
     this.getGroups = function(username, role = 0){
@@ -64,11 +64,11 @@ module.exports = function(){
             }
         }
         return groups;
-    }
+    };
 
     // Get all the channels a user has access for a given group and role
     this.getChannels = function(username, group, role){
-        channels = [];
+        let channels = [];
         // Go through all the channels
         for(let i = 0; i < data.channels.length; i++){
             // Check to see if the channel matches the current group
@@ -89,6 +89,6 @@ module.exports = function(){
 
 
         return channels;
-    }
+    };
     return this;
-}
+};

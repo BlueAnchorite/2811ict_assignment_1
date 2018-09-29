@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
-  private api:string = 'http://localhost:3000/api/';
+  private api:string = 'http://ryoma-assignment1-blueanchorite.c9users.io:8080/api/';
 
   constructor(private http:HttpClient) {}
 

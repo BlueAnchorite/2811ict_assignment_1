@@ -17,7 +17,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   changeChannel(name){
-    // console.log("changeChannel("+name+")");
+    //console.log("changeChannel("+name+")");
     this.channelChanged.emit(name);
   }
 
