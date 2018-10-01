@@ -28,38 +28,38 @@ module.exports = function(){
 
         if(role == 2){
             // Just return every group and every channel
-            for(let i = 0; i < data.groups.length; i++){
-                let group = data.groups[i];
+            for(let i = 0; i < this.data.groups.length; i++){
+                let group = this.data.groups[i];
                 group.channels = this.getChannels(username, group, role);
                 group.role = 2;
                 groups.push(group);
             }
         } else {   
             // Check for group admin
-            for(let i = 0; i < data.groups.length; i++){
-                let admins = data.groups[i].admins;
+            for(let i = 0; i < this.data.groups.length; i++){
+                let admins = this.data.groups[i].admins;
                 for(let j = 0; j < admins.length; j++){
                     if(username == admins[j]){
-                        data.groups[i].role = 1;
-                        groups.push(data.groups[i]);
+                        this.data.groups[i].role = 1;
+                        groups.push(this.data.groups[i]);
                     }
                 }
             }
 
             // Check for membership
-            for(let i = 0; i < data.groups.length; i++){
-                let members = data.groups[i].members;
+            for(let i = 0; i < this.data.groups.length; i++){
+                let members = this.data.groups[i].members;
                 for(let j = 0; j < members.length; j++){
                     if(username == members[j]){
-                        data.groups[i].role = 0;
-                        groups.push(data.groups[i]);
+                        this.data.groups[i].role = 0;
+                        groups.push(this.data.groups[i]);
                     }
                 }
             }
 
             // Grab the channels for each group
             for(let i = 0; i < groups.length; i++){
-                let channels = getChannels(username, groups[i], groups[i].permissions);
+                let channels = this.getChannels(username, groups[i], groups[i].permissions);
                 groups[i].channels = channels;
             }
         }
@@ -70,14 +70,14 @@ module.exports = function(){
     this.getChannels = function(username, group, role){
         let channels = [];
         // Go through all the channels
-        for(let i = 0; i < data.channels.length; i++){
+        for(let i = 0; i < this.data.channels.length; i++){
             // Check to see if the channel matches the current group
-            if(data.channels[i].group == group.name){
+            if(this.data.channels[i].group == group.name){
                 if(role >= 2 || group.role >= 1){
-                    channels.push(data.channels[i]);
+                    channels.push(this.data.channels[i]);
                 } else {
                     // Channel belongs to group, check for access
-                    let channel = data.channels[i];
+                    let channel = this.data.channels[i];
                     for(let j = 0; j < channel.members.length; j++){
                         if(username == channel.members[j]){
                             channels.push(channel);

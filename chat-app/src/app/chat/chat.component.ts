@@ -20,23 +20,37 @@ export class ChatComponent implements OnInit {
     let user = JSON.parse(sessionStorage.getItem('user'));
     
       this.username = user.username;
-      console.log("Chat session started for user: " + this.username);
       this.connection = this.sockServer.getMessages().subscribe(message=>{
         this.messages.push(message);
         this.message = '';
       });
-      this.sockServer.joinChannel(this.username);
+      
     }
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.channel.previousValue){
+      //send leave message
+      let data = {"channel": changes.channel.previousValue, "username": this.username};
+      this.sockServer.leftChannel(data);
+      //unsubscribe to old room
+      this.sockServer.leaveChannel(data);
+    }
+    //subscribe to new room
+    if(this.channel) {
+        let data = {"channel": this.channel, "username": this.username};
+        this.sockServer.joinChannel(data);
+      }
+  }
     
   sendMessage(){
     if (this.message) {
-      this.sockServer.sendMessage('[' + this.username + ']: ' + this.message);
+      let data = {"channel": this.channel, "message": '[' + this.username + ']: ' + this.message};
+      this.sockServer.sendMessage(data);
     }
   }
 
   ngOnDestroy(){
     if(this.connection){
-      this.sockServer.leftChannel(this.username);
       this.connection.unsubscribe();
     }
   }

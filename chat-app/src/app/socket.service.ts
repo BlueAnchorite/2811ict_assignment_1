@@ -13,16 +13,21 @@ export class SocketService {
   constructor() { 
   } 
 
-  joinChannel(username){
-    this.socket.emit('join-message', username);
+  joinChannel(data){
+    this.socket.emit('join-channel', data);
+    this.socket.emit('join-message', data);
   }
   
-  leftChannel(username){
-    this.socket.emit('left-message', username);
+  leaveChannel(data){
+    this.socket.emit('leave-channel', data);
+  }
+  
+  leftChannel(data){
+    this.socket.emit('left-message', data);
   }
 
-  sendMessage(message){
-    this.socket.emit('add-message', message);
+  sendMessage(data){
+    this.socket.emit('add-message', data);
   }
 
   getMessages(){

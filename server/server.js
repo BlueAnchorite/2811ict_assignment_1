@@ -7,7 +7,8 @@ const dataFile = './data.json';
 const dataFormat = 'utf8';
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-
+var mongo = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
 
 // CORS
 // We are enabling CORS so that our 'ng serve' Angular server can still access
@@ -20,7 +21,8 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-
+//Database URL
+const db_url = 'mongodb://blueanchorite-ryoma-assignment1-6413430:27017/mydb';
 
 // Body-Parser
 app.use(bodyParser.json());
@@ -131,8 +133,6 @@ app.post('/api/group/create', function(req, res){
     }
 });
  
-
-
 // HTTP Listener
 var host = process.env.IP;
 var port = process.env.PORT;
@@ -140,3 +140,27 @@ http.listen(port, host, function(){
     console.log('Server running on 8080');
 });
 module.exports = app;
+
+var connection;
+
+// Use connect method to connect to the server
+MongoClient.connect(db_url, {useNewUrlParser: true}, function(err, db) {
+    if (err) throw err;
+    connection = db;
+    var dbo = db.db('mydb');
+    console.log("Connected successfully to database " + dbo.databaseName);
+
+    dbo.listCollections().toArray(function(err, collInfos) {
+        if (err) throw err;
+        console.log(collInfos);
+    });
+
+});
+
+process.on('SIGINT', function() {
+    
+  connection.close(function () {
+    console.log('MongoDB disconnected on app termination');
+    process.exit(0);
+  });
+});

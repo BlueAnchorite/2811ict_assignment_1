@@ -6,6 +6,11 @@
             "permissions": 2
         },
         {
+            "username": "blueanchorite",
+            "password": "password",
+            "permissions": 2
+        },
+        {
             "username": "super",
             "permissions": 2
         },
