@@ -3,12 +3,12 @@ module.exports = function(app, io){
 
     io.on('connection', (socket)=>{
         socket.on('join-channel', (data)=>{
-            console.log(data.channel.name + " joined to socket");
+            //console.log(data.channel.name + " joined to socket");
             socket.join(data.channel.name);
         });
         
         socket.on('leave-channel', (data)=>{
-            console.log(data.channel.name + " left the socket");
+            //console.log(data.channel.name + " left the socket");
             socket.leave(data.channel.name);
         });
         
